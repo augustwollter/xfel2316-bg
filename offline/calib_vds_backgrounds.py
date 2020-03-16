@@ -4,7 +4,7 @@
 Create calibrated shots and powder sums from AGIPD VDS files
 Author: Jonas Sellberg, Kartik Ayyer
 
-Modified by August Wollter to look at backgrounds, returns only 100 first
+Modified by August Wollter to look at backgrounds
 '''
 
 import sys
