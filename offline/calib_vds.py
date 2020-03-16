@@ -3,6 +3,8 @@
 '''
 Create calibrated shots and powder sums from AGIPD VDS files
 Author: Jonas Sellberg, Kartik Ayyer
+
+
 '''
 
 import sys
@@ -329,13 +331,13 @@ if __name__ == '__main__':
                 frames += list(range(int(fmin), int(fmax)+1))
             else:
                 frames += [int(s)]
-    print('Calibrating virtual data set for run %d' % args.run)
+    print('Calibrating virtual data set for run %d' % args.run, flush = True)
     with AGIPD_VDS_Calibrator(fname, good_cells=good_cells, chunk_size=args.chunk, calib_run=args.calib_run, verbose=int(args.verbose)) as c:
         if frames is None:
-            print('Calculating powder sum for run %d' % args.run)
+            print('Calculating powder sum for run %d' % args.run, flush = True)
             c.get_powder()
         else:
-            print('Calibrating %s frames from run %d' % (len(frames), args.run))
+            print('Calibrating %s frames from run %d' % (len(frames), args.run, flush = True))
             frame = c.get_frame(frames, calibrate=True)
         if frames is None:
             if args.proc:
@@ -352,11 +354,11 @@ if __name__ == '__main__':
         if frames is None:
             f['sum'] = c.powder
             f['nframes'] = c.npowder
-            print('Saved powder pattern from run %d to: %s' % (args.run, fname))
+            print('Saved powder pattern from run %d to: %s' % (args.run, fname), flush = True)
         else:
             if hl is not None:
                 # copy data from hitlist
-                print('Copying data from hitlist: %s' % hlname)
+                print('Copying data from hitlist: %s' % hlname, flush = True)
                 for l in hl.keys():
                     hl.copy(l, f)
                 hl.close()
@@ -372,7 +374,7 @@ if __name__ == '__main__':
                 g['pulseID'] = c.pulse_ids
                 g['trainID'] = c.train_ids
                 g['cellID'] = c.cell_ids
-            print('Saved %d frames from run %d to: %s' % (len(frames), args.run, fname))
+            print('Saved %d frames from run %d to: %s' % (len(frames), args.run, fname), flush = True)
         f.close()
         os.system('chmod ao+rw %s' % fname)
         if args.plot > 0:
@@ -393,7 +395,7 @@ if __name__ == '__main__':
                 plt.colorbar()
                 plt.savefig('run%d_shot%d_zoom.png' % (args.run, frames[n]))
                 if args.verbose:
-                    print('Saved figure: run%d_shot%d_zoom.png' % (args.run, frames[n]))
+                    print('Saved figure: run%d_shot%d_zoom.png' % (args.run, frames[n]), flush = True)
                 if (n >= args.plot):
                     break
             plt.close()
